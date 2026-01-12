@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, ArrowRight, Camera, MapPin } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, ArrowRight, Camera, MapPin, FileText, Download } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [activeSection, setActiveSection] = useState('about');
   const [projectImages, setProjectImages] = useState({});
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState('/profile.jpg');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState('');
+  const [resumeOpen, setResumeOpen] = useState(false);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -50,11 +53,17 @@ function App() {
         if (e.key === 'ArrowLeft') prevImage();
         if (e.key === 'ArrowRight') nextImage();
       }
+      if (videoOpen && e.key === 'Escape') {
+        closeVideo();
+      }
+      if (resumeOpen && e.key === 'Escape') {
+        closeResume();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [galleryOpen, currentImageIndex]);
+  }, [galleryOpen, currentImageIndex, videoOpen, resumeOpen]);
 
   const scrollToSection = (sectionId) => {
     sectionRefs.current[sectionId]?.scrollIntoView({ behavior: 'smooth' });
@@ -100,6 +109,24 @@ function App() {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + currentGallery.length) % currentGallery.length);
+  };
+
+  const openVideo = (videoUrl) => {
+    setCurrentVideo(videoUrl);
+    setVideoOpen(true);
+  };
+
+  const closeVideo = () => {
+    setVideoOpen(false);
+    setCurrentVideo('');
+  };
+
+  const openResume = () => {
+    setResumeOpen(true);
+  };
+
+  const closeResume = () => {
+    setResumeOpen(false);
   };
 
   const experiences = [
@@ -173,28 +200,43 @@ function App() {
       title: 'BrainBytes AI',
       description: 'Architected and deployed a comprehensive CI/CD pipeline for AI tutoring platform using GitHub Actions with 6 automated workflows. Implemented Docker containerization with multi-environment deployment and comprehensive DevSecOps practices.',
       tech: ['Node.js', 'MongoDB', 'Docker', 'GitHub Actions', 'DevOps'],
-      links: []
+      links: [],
+      defaultImage: '/brainbytes-thumbnail.png',
+      hasDefaultImage: true,
+      gallery: [
+        '/brainbytes1.png',
+        '/brainbytes2.png',
+        '/brainbytes3.png',
+        '/brainbytes4.png'
+      ]
     },
     {
       id: 'connectly',
       title: 'Connectly Social Media API',
       description: 'Engineered a RESTful API for social media platform using Django and Django REST Framework, implementing authentication and authorization flows with token-based authentication for secure user access and post management.',
       tech: ['Python', 'Django', 'REST API', 'SQLite', 'Design Patterns'],
-      links: []
+      links: [],
+      video: '/connectly.mp4',
+      textOnly: true
     },
     {
       id: 'motorph',
       title: 'MotorPH Payroll System',
       description: 'Architected an enterprise-grade payroll management system using Java and SQL database, implementing role-based access control (RBAC) for HR administrators and employees with advanced OOP design patterns.',
       tech: ['Java', 'SQL Database', 'OOP', 'Maven'],
-      links: []
+      links: [],
+      textOnly: true
     },
     {
       id: 'chowgarage',
       title: 'ChowGarage Restaurant Website',
       description: 'Designed and developed a fully responsive restaurant website using HTML5, CSS3, and JavaScript. Created wireframes and prototypes in Figma, implemented interactive navigation with hover effects, and integrated Google Maps API.',
       tech: ['HTML', 'CSS', 'JavaScript', 'Figma', 'GitHub Pages'],
-      links: []
+      links: [
+        { text: 'Live Demo', url: 'https://yenniecodes.github.io/ChowGarage/' }
+      ],
+      defaultImage: '/chowgarage.png',
+      hasDefaultImage: true
     }
   ];
 
@@ -232,7 +274,7 @@ function App() {
               </div>
             </div>
             <h1>Lhenard Trinidad</h1>
-            <h2>Full-Stack Developer</h2>
+            <h2>Software Developer</h2>
             <div className="location">
               <MapPin size={14} />
               <span>Calamba, Laguna, Philippines</span>
@@ -251,7 +293,7 @@ function App() {
                 <div className="stat-label">Projects</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">3</div>
+                <div className="stat-number">1</div>
                 <div className="stat-label">Years Exp</div>
               </div>
             </div>
@@ -309,7 +351,7 @@ function App() {
           >
             <div className="section-content">
               <p className="paragraph">
-                I'm a passionate Full-Stack Developer currently pursuing my B.S. in Information Technology 
+                I'm a passionate Software Developer currently pursuing my B.S. in Information Technology 
                 with a specialization in Software Development at{' '}
                 <a href="#" className="link">Mapua Malayan Digital College</a>.
               </p>
@@ -323,7 +365,7 @@ function App() {
                 <a href="#" className="link">Nextvas Inc.</a>, where I develop custom systems 
                 for inventory management and HR automation while managing network infrastructure. I care about 
                 writing clean code, creating smooth user experiences, and following best practices in 
-                frontend development.
+                software development.
               </p>
               <p className="paragraph">
                 In my spare time, I enjoy exploring new technologies, contributing to open-source projects, 
@@ -383,9 +425,9 @@ function App() {
                 )
               ))}
 
-              <a href="/resume.pdf" className="view-resume">
+              <button onClick={openResume} className="view-resume">
                 View Full Résumé <ArrowRight size={16} />
-              </a>
+              </button>
             </div>
           </section>
 
@@ -454,6 +496,44 @@ function App() {
                         <h3 className="project-title">
                           {project.title}
                           <span className="gallery-icon">🖼️</span>
+                        </h3>
+                        <p className="project-description">{project.description}</p>
+                        <div className="project-tech">
+                          {project.tech.map((tech) => (
+                            <span key={tech} className="tech-tag">{tech}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : project.video ? (
+                  <div
+                    key={project.id}
+                    onClick={() => openVideo(project.video)}
+                    className="project-card-link"
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="project-item">
+                      <div className="project-content" style={{ gridColumn: '1 / -1' }}>
+                        <h3 className="project-title">
+                          {project.title}
+                          <span className="video-icon">🎥</span>
+                        </h3>
+                        <p className="project-description">{project.description}</p>
+                        <div className="project-tech">
+                          {project.tech.map((tech) => (
+                            <span key={tech} className="tech-tag">{tech}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : project.textOnly ? (
+                  <div key={project.id} className="project-card-link">
+                    <div className="project-item">
+                      <div className="project-content" style={{ gridColumn: '1 / -1' }}>
+                        <h3 className="project-title">
+                          {project.title}
                         </h3>
                         <p className="project-description">{project.description}</p>
                         <div className="project-tech">
@@ -542,6 +622,44 @@ function App() {
             <div className="gallery-counter">
               {currentImageIndex + 1} / {currentGallery.length}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Modal */}
+      {videoOpen && (
+        <div className="video-modal" onClick={closeVideo}>
+          <button className="video-close" onClick={closeVideo}>×</button>
+          <div className="video-content" onClick={(e) => e.stopPropagation()}>
+            <video 
+              src={currentVideo}
+              controls
+              autoPlay
+              className="video-player"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Resume Modal */}
+      {resumeOpen && (
+        <div className="resume-modal" onClick={closeResume}>
+          <button className="resume-close" onClick={closeResume}>×</button>
+          <a 
+            href="/LTrinidad_CV.pdf" 
+            download="Lhenard_Trinidad_Resume.pdf"
+            className="resume-download"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Download size={20} />
+            <span>Download PDF</span>
+          </a>
+          <div className="resume-content" onClick={(e) => e.stopPropagation()}>
+            <iframe 
+              src="/LTrinidad_CV.pdf"
+              title="Resume"
+              className="resume-viewer"
+            />
           </div>
         </div>
       )}
