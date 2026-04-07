@@ -132,7 +132,7 @@ function App() {
   const experiences = [
     {
       id: 1,
-      period: '2025 — Present',
+      period: '2025 — 2026',
       title: 'IT Support Specialist',
       company: 'Nextvas Inc.',
       description: 'Provided comprehensive hardware troubleshooting, repair, and technical support for organization\'s IT infrastructure. Configured and managed local network systems using MikroTik routers and switches. Developed custom inventory management system for IT equipment tracking and created an automated resume checker system for the HR department.',
@@ -286,7 +286,7 @@ function App() {
             <div className="stats-grid">
               <div className="stat-item">
                 <div className="stat-number">2026</div>
-                <div className="stat-label">Expected Grad</div>
+                <div className="stat-label">Graduate</div>
               </div>
               <div className="stat-item">
                 <div className="stat-number">6+</div>
@@ -351,8 +351,8 @@ function App() {
           >
             <div className="section-content">
               <p className="paragraph">
-                I'm a passionate Software Developer currently pursuing my B.S. in Information Technology 
-                with a specialization in Software Development at{' '}
+                I'm a passionate Software Developer with a B.S. in Information Technology, specializing 
+                in Software Development from{' '}
                 <a href="#" className="link">Mapua Malayan Digital College</a>.
               </p>
               <p className="paragraph">
@@ -361,16 +361,15 @@ function App() {
                 on diverse projects ranging from pet care platforms to NFT generation systems.
               </p>
               <p className="paragraph">
-                Currently working as an IT Support Specialist at{' '}
-                <a href="#" className="link">Nextvas Inc.</a>, where I develop custom systems 
+                Most recently, I worked as an IT Support Specialist at{' '}
+                <a href="#" className="link">Nextvas Inc.</a>, where I developed custom systems 
                 for inventory management and HR automation while managing network infrastructure. I care about 
                 writing clean code, creating smooth user experiences, and following best practices in 
                 software development.
               </p>
               <p className="paragraph">
                 In my spare time, I enjoy exploring new technologies, contributing to open-source projects, 
-                and continuously learning about the latest trends in web development. Expected to graduate 
-                in July 2026.
+                and continuously learning about the latest trends in web development.
               </p>
             </div>
           </section>
@@ -450,8 +449,7 @@ function App() {
                     </h3>
                     <p className="exp-description">
                       Specialization in Software Development. Relevant coursework includes Software Development, 
-                      Data Structures & Algorithms, DevOps, Mobile Development, and Capstone Project. Expected 
-                      graduation: July 2026.
+                      Data Structures & Algorithms, DevOps, Mobile Development, and Capstone Project.
                     </p>
                     <div className="exp-tech">
                       <span className="tech-tag">Software Development</span>
